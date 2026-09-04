@@ -20,13 +20,9 @@ const userNameInput = document.getElementById('userName');
 const dummyPasswordInput = document.getElementById('dummyPassword');
 const loginBtn = document.getElementById('loginBtn');
 const signupBtn = document.getElementById('signupBtn');
-
-const crushNameInput = document.getElementById('crushName');
-const sportInput = document.getElementById('sportInput');
-const hobbyInput = document.getElementById('hobbyInput');
-const songInput = document.getElementById('songInput');
-
-const submitCrushBtn = document.getElementById('submitCrushBtn');
+const surveyTitle = document.getElementById('surveyTitle');
+const surveyInput = document.getElementById('surveyInput');
+const nextSurveyBtn = document.getElementById('nextSurveyBtn');
 
 const secretBtn = document.getElementById('secretBtn');
 
@@ -34,6 +30,14 @@ const resultList = document.getElementById('resultList');
 const backBtn = document.getElementById('backBtn');
 
 let currentUser = "";
+let surveyStep = 0;
+const surveyData = { sport: "", hobby: "", song: "", crush: "" };
+const surveyQuestions = [
+    { key: "sport", title: "가장 관심 있는 운동이 무엇인가요? 🏃", placeholder: "예: 축구, 농구, 숨쉬기" },
+    { key: "hobby", title: "요즘 즐겨하는 취미는 무엇인가요? 🎨", placeholder: "예: 게임, 독서, 유튜브 시청" },
+    { key: "song", title: "가장 좋아하는 노래는? 🎵", placeholder: "노래 제목을 적어주세요" },
+    { key: "crush", title: "마지막 질문!\n반에서 가장 좋아하는 이성 친구는? ❤️", placeholder: "솔직하게 적어주세요!" }
+];
 
 function showScreen(screen) {
     screen1.style.display = 'none';
@@ -43,6 +47,18 @@ function showScreen(screen) {
     screen.style.display = 'flex';
 }
 
+function updateSurveyUI() {
+    const q = surveyQuestions[surveyStep];
+    surveyTitle.innerText = q.title;
+    surveyInput.value = "";
+    surveyInput.placeholder = q.placeholder;
+    if (surveyStep === surveyQuestions.length - 1) {
+        nextSurveyBtn.innerText = "제출하기";
+    } else {
+        nextSurveyBtn.innerText = "다음";
+    }
+}
+
 loginBtn.addEventListener('click', () => {
     const name = userNameInput.value.trim();
     if (!name) {
@@ -50,6 +66,8 @@ loginBtn.addEventListener('click', () => {
         return;
     }
     currentUser = name;
+    surveyStep = 0;
+    updateSurveyUI();
     showScreen(screen2);
 });
 
@@ -57,39 +75,45 @@ signupBtn.addEventListener('click', () => {
     alert("현재 회원가입이 불가능합니다. 이름만 입력하고 로그인하세요.");
 });
 
-submitCrushBtn.addEventListener('click', async () => {
-    const crush = crushNameInput.value.trim();
-    const sport = sportInput.value.trim();
-    const hobby = hobbyInput.value.trim();
-    const song = songInput.value.trim();
-
-    if (!crush || !sport || !hobby || !song) {
-        alert("모든 항목을 입력해주세요!");
+nextSurveyBtn.addEventListener('click', async () => {
+    const val = surveyInput.value.trim();
+    if (!val) {
+        alert("답변을 입력해주세요!");
         return;
     }
     
-    // 로딩 상태 표시
-    const originalText = submitCrushBtn.innerText;
-    submitCrushBtn.innerText = "저장 중...";
-    submitCrushBtn.disabled = true;
+    // 현재 답변 저장
+    const currentKey = surveyQuestions[surveyStep].key;
+    surveyData[currentKey] = val;
+    
+    // 마지막 질문인지 확인
+    if (surveyStep === surveyQuestions.length - 1) {
+        // 파이어베이스에 데이터 저장
+        const originalText = nextSurveyBtn.innerText;
+        nextSurveyBtn.innerText = "저장 중...";
+        nextSurveyBtn.disabled = true;
 
-    // 파이어베이스에 데이터 저장
-    try {
-        await db.collection("crushes").add({
-            name: currentUser,
-            sport: sport,
-            hobby: hobby,
-            song: song,
-            crush: crush,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        showScreen(screen3);
-    } catch (e) {
-        console.error("데이터 저장 실패:", e);
-        alert("저장에 실패했습니다. 파이어베이스 데이터베이스가 생성되었는지 확인해주세요!");
-    } finally {
-        submitCrushBtn.innerText = originalText;
-        submitCrushBtn.disabled = false;
+        try {
+            await db.collection("crushes").add({
+                name: currentUser,
+                sport: surveyData.sport,
+                hobby: surveyData.hobby,
+                song: surveyData.song,
+                crush: surveyData.crush,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            showScreen(screen3);
+        } catch (e) {
+            console.error("데이터 저장 실패:", e);
+            alert("저장에 실패했습니다. 파이어베이스 데이터베이스가 생성되었는지 확인해주세요!");
+        } finally {
+            nextSurveyBtn.innerText = originalText;
+            nextSurveyBtn.disabled = false;
+        }
+    } else {
+        // 다음 질문으로 넘어가기
+        surveyStep++;
+        updateSurveyUI();
     }
 });
 
@@ -134,9 +158,11 @@ secretBtn.addEventListener('click', async () => {
 backBtn.addEventListener('click', () => {
     userNameInput.value = '';
     dummyPasswordInput.value = '';
-    crushNameInput.value = '';
-    sportInput.value = '';
-    hobbyInput.value = '';
-    songInput.value = '';
+    surveyInput.value = '';
+    surveyStep = 0;
+    surveyData.sport = "";
+    surveyData.hobby = "";
+    surveyData.song = "";
+    surveyData.crush = "";
     showScreen(screen1);
 });

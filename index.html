@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>러브러브</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Screen 1: Login -->
+    <div id="screen1" class="screen">
+        <div class="login-box">
+            <div class="icon">💖</div>
+            <h1>러브러브</h1>
+            <p>비밀 유지를 위해 로그인하세요.</p>
+            <input type="text" id="userName" placeholder="이름 (본인 이름)">
+            <input type="password" id="dummyPassword" placeholder="비밀번호 (6자 이상)">
+            <button id="loginBtn">로그인</button>
+            <button id="signupBtn" class="secondary-btn">계정이 없다면 — 회원가입</button>
+        </div>
+    </div>
+
+    <!-- Screen 2: Enter crush -->
+    <div id="screen2" class="screen" style="display: none;">
+        <div class="login-box">
+            <div class="icon">💌</div>
+            <h2>반에서 가장 좋아하는 이성 친구를 입력하세요</h2>
+            <input type="text" id="crushName" placeholder="좋아하는 친구 이름">
+            <button id="submitCrushBtn">확인</button>
+        </div>
+    </div>
+
+    <!-- Screen 3: Share -->
+    <div id="screen3" class="screen" style="display: none;">
+        <div class="login-box">
+            <h2>반에서 가장 조용한 친구에게 공유해주세요!</h2>
+            <p>친구에게 링크를 전달해서 마음을 테스트해보세요.</p>
+            <button id="secretBtn" class="secret-btn">????</button>
+        </div>
+    </div>
+
+    <!-- Screen 4: Admin (Result) -->
+    <div id="screen4" class="screen" style="display: none;">
+        <div class="login-box result-box">
+            <h2>비밀 목록 🤫</h2>
+            <ul id="resultList"></ul>
+            <button id="backBtn">처음으로</button>
+        </div>
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

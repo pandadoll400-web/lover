@@ -1,0 +1,144 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #ffb6c1; /* 핑크 배경 */
+    font-family: 'Malgun Gothic', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #fff;
+}
+
+.screen {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-box {
+    background-color: #1e1e24; /* 스크린샷과 유사한 어두운 박스 */
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    text-align: center;
+    width: 90%;
+    max-width: 350px;
+    box-sizing: border-box;
+    border: 1px solid #333;
+}
+
+.icon {
+    font-size: 45px;
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: 26px;
+    margin: 0 0 10px 0;
+    color: #fff;
+}
+
+h2 {
+    font-size: 20px;
+    margin: 0 0 20px 0;
+    line-height: 1.4;
+    color: #fff;
+}
+
+p {
+    font-size: 13px;
+    color: #aaa;
+    margin-bottom: 25px;
+}
+
+input {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 15px;
+    border: 1px solid #333;
+    background-color: #121215;
+    color: #fff;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 15px;
+}
+
+input::placeholder {
+    color: #666;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: 0.2s;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+.secondary-btn {
+    background-color: transparent;
+    border: 1px solid #333;
+    color: #aaa;
+    font-size: 13px;
+    padding: 12px;
+}
+
+.secondary-btn:hover {
+    background-color: #333;
+    color: #fff;
+}
+
+.secret-btn {
+    background-color: transparent;
+    color: #555;
+    border: 1px dashed #555;
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.secret-btn:hover {
+    color: #ffb6c1;
+    border-color: #ffb6c1;
+}
+
+.result-box {
+    text-align: left;
+}
+
+.result-box h2 {
+    text-align: center;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+li {
+    background: #2a2a32;
+    margin-bottom: 8px;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+li span.name {
+    color: #ffb6c1;
+    font-weight: bold;
+}

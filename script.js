@@ -134,12 +134,20 @@ secretBtn.addEventListener('click', async () => {
                 querySnapshot.forEach((doc) => {
                     const item = doc.data();
                     const li = document.createElement('li');
-                    li.innerHTML = `
-                        <div style="color: #ffb6c1; font-weight: bold; font-size: 16px; margin-bottom: 5px;">${item.name} 님</div>
-                        <div style="font-size: 13px; color: #ccc; line-height: 1.6;">
+                    
+                    let extraInfo = "";
+                    if (item.sport !== undefined) {
+                        extraInfo = `
                             🏃 운동: ${item.sport || '없음'}<br>
                             🎨 취미: ${item.hobby || '없음'}<br>
                             🎵 노래: ${item.song || '없음'}<br>
+                        `;
+                    }
+
+                    li.innerHTML = `
+                        <div style="color: #ffb6c1; font-weight: bold; font-size: 16px; margin-bottom: 5px;">${item.name} 님</div>
+                        <div style="font-size: 13px; color: #ccc; line-height: 1.6;">
+                            ${extraInfo}
                             ❤️ <b>짝사랑: <span style="color: #fff;">${item.crush}</span></b>
                         </div>
                     `;

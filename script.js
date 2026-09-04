@@ -22,6 +22,10 @@ const loginBtn = document.getElementById('loginBtn');
 const signupBtn = document.getElementById('signupBtn');
 
 const crushNameInput = document.getElementById('crushName');
+const sportInput = document.getElementById('sportInput');
+const hobbyInput = document.getElementById('hobbyInput');
+const songInput = document.getElementById('songInput');
+
 const submitCrushBtn = document.getElementById('submitCrushBtn');
 
 const secretBtn = document.getElementById('secretBtn');
@@ -55,8 +59,12 @@ signupBtn.addEventListener('click', () => {
 
 submitCrushBtn.addEventListener('click', async () => {
     const crush = crushNameInput.value.trim();
-    if (!crush) {
-        alert("좋아하는 친구의 이름을 입력해주세요!");
+    const sport = sportInput.value.trim();
+    const hobby = hobbyInput.value.trim();
+    const song = songInput.value.trim();
+
+    if (!crush || !sport || !hobby || !song) {
+        alert("모든 항목을 입력해주세요!");
         return;
     }
     
@@ -69,6 +77,9 @@ submitCrushBtn.addEventListener('click', async () => {
     try {
         await db.collection("crushes").add({
             name: currentUser,
+            sport: sport,
+            hobby: hobby,
+            song: song,
             crush: crush,
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
@@ -99,7 +110,15 @@ secretBtn.addEventListener('click', async () => {
                 querySnapshot.forEach((doc) => {
                     const item = doc.data();
                     const li = document.createElement('li');
-                    li.innerHTML = `<span class="name">${item.name}</span> 님이 좋아하는 사람: <b>${item.crush}</b>`;
+                    li.innerHTML = `
+                        <div style="color: #ffb6c1; font-weight: bold; font-size: 16px; margin-bottom: 5px;">${item.name} 님</div>
+                        <div style="font-size: 13px; color: #ccc; line-height: 1.6;">
+                            🏃 운동: ${item.sport || '없음'}<br>
+                            🎨 취미: ${item.hobby || '없음'}<br>
+                            🎵 노래: ${item.song || '없음'}<br>
+                            ❤️ <b>짝사랑: <span style="color: #fff;">${item.crush}</span></b>
+                        </div>
+                    `;
                     resultList.appendChild(li);
                 });
             }
@@ -116,5 +135,8 @@ backBtn.addEventListener('click', () => {
     userNameInput.value = '';
     dummyPasswordInput.value = '';
     crushNameInput.value = '';
+    sportInput.value = '';
+    hobbyInput.value = '';
+    songInput.value = '';
     showScreen(screen1);
 });

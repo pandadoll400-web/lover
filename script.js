@@ -60,6 +60,11 @@ submitCrushBtn.addEventListener('click', async () => {
         return;
     }
     
+    // 로딩 상태 표시
+    const originalText = submitCrushBtn.innerText;
+    submitCrushBtn.innerText = "저장 중...";
+    submitCrushBtn.disabled = true;
+
     // 파이어베이스에 데이터 저장
     try {
         await db.collection("crushes").add({
@@ -70,7 +75,10 @@ submitCrushBtn.addEventListener('click', async () => {
         showScreen(screen3);
     } catch (e) {
         console.error("데이터 저장 실패:", e);
-        alert("저장에 실패했습니다. 인터넷 연결 상태나 데이터베이스(Firestore) 설정을 확인해주세요!");
+        alert("저장에 실패했습니다. 파이어베이스 데이터베이스가 생성되었는지 확인해주세요!");
+    } finally {
+        submitCrushBtn.innerText = originalText;
+        submitCrushBtn.disabled = false;
     }
 });
 

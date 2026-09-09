@@ -19,7 +19,6 @@ const screen4 = document.getElementById('screen4');
 const userNameInput = document.getElementById('userName');
 const dummyPasswordInput = document.getElementById('dummyPassword');
 const loginBtn = document.getElementById('loginBtn');
-const signupBtn = document.getElementById('signupBtn');
 const surveyTitle = document.getElementById('surveyTitle');
 const surveyInput = document.getElementById('surveyInput');
 const nextSurveyBtn = document.getElementById('nextSurveyBtn');
@@ -69,10 +68,6 @@ loginBtn.addEventListener('click', () => {
     surveyStep = 0;
     updateSurveyUI();
     showScreen(screen2);
-});
-
-signupBtn.addEventListener('click', () => {
-    alert("현재 회원가입이 불가능합니다. 이름만 입력하고 로그인하세요.");
 });
 
 nextSurveyBtn.addEventListener('click', async () => {

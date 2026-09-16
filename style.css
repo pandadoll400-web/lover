@@ -1,144 +1,93 @@
-body {
-    margin: 0;
-    padding: 0;
-    background-color: #ffb6c1; /* 핑크 배경 */
-    font-family: 'Malgun Gothic', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    color: #fff;
+body { margin: 0; overflow: hidden; font-family: 'Pretendard', sans-serif; user-select: none; background-color: #87CEEB; }
+canvas { display: block; }
+#ui { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+
+#stats {
+    position: absolute; top: 20px; left: 20px; background: rgba(0, 0, 0, 0.8); color: white;
+    padding: 15px 25px; border-radius: 12px; border: 2px solid rgba(255, 255, 255, 0.2); 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.5); pointer-events: auto;
+}
+#stats h2 { margin: 5px 0; font-size: 20px; }
+#stats hr { border: 1px solid #555; margin: 10px 0; }
+#stats p { margin: 5px 0; font-size: 14px; color: #ccc; }
+
+#xpBarContainer { width: 100%; height: 10px; background: #333; border-radius: 5px; margin-top: 5px; border: 1px solid #000; }
+#xpBar { width: 0%; height: 100%; background: linear-gradient(90deg, #ff8a00, #e52e71); transition: width 0.1s; }
+
+#alertBox { color: #ff5555; font-weight: bold; font-size: 18px; margin-top: 10px; min-height: 24px; transition: opacity 0.5s; }
+
+/* Hotbar */
+#hotbar {
+    position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 10px; pointer-events: auto;
+}
+.slot {
+    width: 60px; height: 60px; background: rgba(0,0,0,0.6); border: 2px solid #555; border-radius: 10px;
+    position: relative; display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: bold; transition: 0.2s;
+}
+.slot.active { border-color: #ffea00; background: rgba(50,50,0,0.8); transform: scale(1.1); box-shadow: 0 0 10px #ffea00; }
+.key { position: absolute; top: 5px; left: 8px; font-size: 12px; color: #aaa; }
+.item { font-size: 24px; } /* emoji or egg text */
+
+#btnPetMenu {
+    position: absolute; top: 20px; right: 200px; background: #9932CC; color: white; border: 2px solid white;
+    padding: 10px 20px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; pointer-events: auto;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.5); transition: 0.2s;
+}
+#btnPetMenu:hover { transform: scale(1.05); background: #8A2BE2; }
+
+#interactionPrompt {
+    position: absolute; bottom: 150px; left: 50%; transform: translateX(-50%);
+    background: rgba(0,0,0,0.8); color: #00ff00; padding: 10px 20px; border-radius: 8px; font-weight: bold; font-size: 18px;
 }
 
-.screen {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+#shopUi {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    background: rgba(30, 30, 30, 0.95); color: white; padding: 30px; border-radius: 15px; border: 2px solid #ffea00;
+    text-align: center; pointer-events: auto; box-shadow: 0 0 30px rgba(0,0,0,0.8);
+}
+#btnBuyTreadmill { background: #ffea00; border: none; padding: 10px 20px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; }
+
+#treadmillStatus { position: absolute; top: 20px; right: 20px; text-align: right; pointer-events: auto; }
+#btnInstall { background: #ff8a00; color: white; border: none; padding: 10px 20px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; }
+#treadmillHint { margin-top: 10px; background: rgba(0,0,0,0.7); color: #00ff00; padding: 10px; border-radius: 8px; font-weight: bold; }
+
+#trainingUi {
+    position: absolute; top: 20%; left: 50%; transform: translateX(-50%); background: rgba(255, 50, 50, 0.9);
+    color: white; padding: 20px 40px; border-radius: 20px; text-align: center; border: 4px solid white;
+    box-shadow: 0 0 20px rgba(255,0,0,0.8); animation: pulse 1s infinite alternate;
+}
+@keyframes pulse { 0% { transform: translateX(-50%) scale(1); } 100% { transform: translateX(-50%) scale(1.05); } }
+
+#crosshair {
+    position: absolute; top: 50%; left: 50%; width: 6px; height: 6px; background-color: white;
+    border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 2px black;
 }
 
-.login-box {
-    background-color: #1e1e24; /* 스크린샷과 유사한 어두운 박스 */
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    text-align: center;
-    width: 90%;
-    max-width: 350px;
-    box-sizing: border-box;
-    border: 1px solid #333;
+/* Pet Floating Labels */
+#petLabelsContainer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+.pet-label {
+    position: absolute; transform: translate(-50%, -50%); color: #ffd700; font-weight: bold; font-size: 14px;
+    text-shadow: 1px 1px 2px #000, -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000;
 }
 
-.icon {
-    font-size: 45px;
-    margin-bottom: 10px;
+/* Pet Modal */
+#petModal {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7);
+    display: flex; align-items: center; justify-content: center; pointer-events: auto; z-index: 1000;
 }
-
-h1 {
-    font-size: 26px;
-    margin: 0 0 10px 0;
-    color: #fff;
+.modal-content {
+    background: #222; width: 600px; max-height: 80%; padding: 20px; border-radius: 15px; border: 2px solid #555;
+    display: flex; flex-direction: column; color: white;
 }
-
-h2 {
-    font-size: 20px;
-    margin: 0 0 20px 0;
-    line-height: 1.4;
-    color: #fff;
+.btn-primary { background: #ffea00; font-weight: bold; padding: 10px; border: none; border-radius: 5px; cursor: pointer; margin-bottom: 10px; }
+.btn-secondary { background: #555; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; margin-bottom: 20px; }
+#petList { display: flex; flex-wrap: wrap; gap: 10px; overflow-y: auto; }
+.pet-card {
+    background: #333; border: 2px solid #444; border-radius: 10px; padding: 10px; width: 130px; text-align: center;
 }
-
-p {
-    font-size: 13px;
-    color: #aaa;
-    margin-bottom: 25px;
-}
-
-input {
-    width: 100%;
-    padding: 14px;
-    margin-bottom: 15px;
-    border: 1px solid #333;
-    background-color: #121215;
-    color: #fff;
-    border-radius: 6px;
-    box-sizing: border-box;
-    font-size: 15px;
-}
-
-input::placeholder {
-    color: #666;
-}
-
-button {
-    width: 100%;
-    padding: 14px;
-    background-color: #3498db;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-bottom: 10px;
-    transition: 0.2s;
-}
-
-button:hover {
-    background-color: #2980b9;
-}
-
-.secondary-btn {
-    background-color: transparent;
-    border: 1px solid #333;
-    color: #aaa;
-    font-size: 13px;
-    padding: 12px;
-}
-
-.secondary-btn:hover {
-    background-color: #333;
-    color: #fff;
-}
-
-.secret-btn {
-    background-color: transparent;
-    color: #555;
-    border: 1px dashed #555;
-    margin-top: 20px;
-    padding: 10px;
-    font-size: 14px;
-}
-
-.secret-btn:hover {
-    color: #ffb6c1;
-    border-color: #ffb6c1;
-}
-
-.result-box {
-    text-align: left;
-}
-
-.result-box h2 {
-    text-align: center;
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-    max-height: 300px;
-    overflow-y: auto;
-    margin-bottom: 20px;
-}
-
-li {
-    background: #2a2a32;
-    margin-bottom: 8px;
-    padding: 12px;
-    border-radius: 6px;
-    font-size: 15px;
-}
-
-li span.name {
-    color: #ffb6c1;
-    font-weight: bold;
-}
+.pet-card.equipped { border-color: #00ff00; background: rgba(0, 255, 0, 0.1); }
+.pet-card button { margin-top: 10px; width: 100%; padding: 5px; cursor: pointer; border: none; border-radius: 3px; font-weight: bold; }
+.btn-equip { background: #00aa00; color: white; }
+.btn-unequip { background: #aa0000; color: white; }

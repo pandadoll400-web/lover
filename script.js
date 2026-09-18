@@ -19,9 +19,12 @@ const screen3 = document.getElementById('screen3');
 const screenQuiz = document.getElementById('screenQuiz');
 const screenQuizFail = document.getElementById('screenQuizFail');
 const screenQuizSuccess = document.getElementById('screenQuizSuccess');
+const screenHate = document.getElementById('screenHate');
 const screen4 = document.getElementById('screen4');
 
-// Login
+// Login & Easter Egg
+const mainIcon = document.getElementById('mainIcon');
+const mainTitle = document.getElementById('mainTitle');
 const userNameInput = document.getElementById('userName');
 const dummyPasswordInput = document.getElementById('dummyPassword');
 const loginBtn = document.getElementById('loginBtn');
@@ -29,6 +32,7 @@ const loginBtn = document.getElementById('loginBtn');
 // Mode Selection
 const modeSurveyBtn = document.getElementById('modeSurveyBtn');
 const modeQuizBtn = document.getElementById('modeQuizBtn');
+const modeHateBtn = document.getElementById('modeHateBtn');
 const secretIconMode = document.getElementById('secretIconMode');
 
 // Survey
@@ -43,13 +47,21 @@ const nextQuizBtn = document.getElementById('nextQuizBtn');
 const livesDisplay = document.getElementById('livesDisplay');
 const retryQuizBtn = document.getElementById('retryQuizBtn');
 
+// Hate Mode
+const hateOpposite = document.getElementById('hateOpposite');
+const hateSame = document.getElementById('hateSame');
+const submitHateBtn = document.getElementById('submitHateBtn');
+
 // Admin
 const resultList = document.getElementById('resultList');
 const backBtn = document.getElementById('backBtn');
 const tabSurvey = document.getElementById('tabSurvey');
 const tabQuiz = document.getElementById('tabQuiz');
+const tabHate = document.getElementById('tabHate');
 
 let currentUser = "";
+let heartClickCount = 0;
+let isHateModeActive = false;
 
 // --- Survey Data ---
 let surveyStep = 0;
@@ -74,9 +86,21 @@ const quizQuestions = [
 ];
 
 function showScreen(screen) {
-    [screen1, screenMode, screen2, screen3, screenQuiz, screenQuizFail, screenQuizSuccess, screen4].forEach(s => s.style.display = 'none');
+    [screen1, screenMode, screen2, screen3, screenQuiz, screenQuizFail, screenQuizSuccess, screenHate, screen4].forEach(s => s.style.display = 'none');
     screen.style.display = 'flex';
 }
+
+// 0. Easter Egg
+mainIcon.addEventListener('click', () => {
+    heartClickCount++;
+    if (heartClickCount === 3) {
+        isHateModeActive = true;
+        mainIcon.innerText = "💔";
+        mainTitle.innerText = "헤잇헤잇";
+        document.body.style.backgroundColor = "#9b59b6"; // Purple background
+        modeHateBtn.style.display = "inline-block";
+    }
+});
 
 // 1. Login
 loginBtn.addEventListener('click', () => {
@@ -102,6 +126,12 @@ modeQuizBtn.addEventListener('click', () => {
     quizAnswers.length = 0;
     updateQuizUI();
     showScreen(screenQuiz);
+});
+
+modeHateBtn.addEventListener('click', () => {
+    hateOpposite.value = "";
+    hateSame.value = "";
+    showScreen(screenHate);
 });
 
 // 3. Survey Logic
@@ -219,12 +249,41 @@ retryQuizBtn.addEventListener('click', () => {
     showScreen(screenQuiz);
 });
 
+// 4.5 Hate Mode Logic
+submitHateBtn.addEventListener('click', async () => {
+    const opp = hateOpposite.value.trim();
+    const same = hateSame.value.trim();
+    if (!opp || !same) {
+        alert("모든 항목을 입력해주세요!");
+        return;
+    }
+
+    const originalText = submitHateBtn.innerText;
+    submitHateBtn.innerText = "저장 중...";
+    submitHateBtn.disabled = true;
+
+    try {
+        await db.collection("hates").add({
+            name: currentUser,
+            opposite: opp,
+            same: same,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        showScreen(screen3);
+    } catch (e) {
+        alert("저장에 실패했습니다.");
+    } finally {
+        submitHateBtn.innerText = originalText;
+        submitHateBtn.disabled = false;
+    }
+});
+
 // 5. Admin Logic (Secret Button)
 async function openAdmin() {
     const pwd = prompt("비밀번호를 입력하세요:");
     if (pwd === "112526!") {
         showScreen(screen4);
-        loadAdminData('survey'); // 기본 설문 결과 표시
+        tabSurvey.click(); // Load default
     } else if (pwd !== null) {
         alert("비밀번호가 틀렸습니다.");
     }
@@ -235,13 +294,31 @@ secretIconMode.addEventListener('click', openAdmin);
 tabSurvey.addEventListener('click', () => {
     tabSurvey.style.backgroundColor = '#e74c3c';
     tabQuiz.style.backgroundColor = '#3498db';
+    tabHate.style.backgroundColor = '#8e44ad';
+    tabSurvey.style.opacity = '1';
+    tabQuiz.style.opacity = '0.5';
+    tabHate.style.opacity = '0.5';
     loadAdminData('survey');
 });
 
 tabQuiz.addEventListener('click', () => {
-    tabQuiz.style.backgroundColor = '#e74c3c';
-    tabSurvey.style.backgroundColor = '#3498db';
+    tabSurvey.style.backgroundColor = '#e74c3c';
+    tabQuiz.style.backgroundColor = '#3498db';
+    tabHate.style.backgroundColor = '#8e44ad';
+    tabSurvey.style.opacity = '0.5';
+    tabQuiz.style.opacity = '1';
+    tabHate.style.opacity = '0.5';
     loadAdminData('quiz');
+});
+
+tabHate.addEventListener('click', () => {
+    tabSurvey.style.backgroundColor = '#e74c3c';
+    tabQuiz.style.backgroundColor = '#3498db';
+    tabHate.style.backgroundColor = '#8e44ad';
+    tabSurvey.style.opacity = '0.5';
+    tabQuiz.style.opacity = '0.5';
+    tabHate.style.opacity = '1';
+    loadAdminData('hate');
 });
 
 async function loadAdminData(type) {
@@ -275,7 +352,7 @@ async function loadAdminData(type) {
                 `;
                 resultList.appendChild(li);
             });
-        } else {
+        } else if (type === 'quiz') {
             // 퀴즈 결과 불러오기
             const querySnapshot = await db.collection("quiz_answers").orderBy("timestamp", "desc").get();
             resultList.innerHTML = '';
@@ -291,6 +368,26 @@ async function loadAdminData(type) {
                     <div style="color: #3498db; font-weight: bold; font-size: 16px; margin-bottom: 5px;">${item.name} 님 (${item.passed ? '성공🎉' : '실패❌'})</div>
                     <div style="font-size: 13px; color: #ccc; line-height: 1.6;">
                         ${answersHtml}
+                    </div>
+                `;
+                resultList.appendChild(li);
+            });
+        } else if (type === 'hate') {
+            // 헤잇 결과 불러오기
+            const querySnapshot = await db.collection("hates").orderBy("timestamp", "desc").get();
+            resultList.innerHTML = '';
+            if (querySnapshot.empty) {
+                resultList.innerHTML = '<li>아직 증오(?)를 표출한 사람이 없습니다.</li>';
+                return;
+            }
+            querySnapshot.forEach((doc) => {
+                const item = doc.data();
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <div style="color: #9b59b6; font-weight: bold; font-size: 16px; margin-bottom: 5px;">${item.name} 님</div>
+                    <div style="font-size: 13px; color: #ccc; line-height: 1.6;">
+                        💔 싫은 이성: ${item.opposite}<br>
+                        💔 싫은 동성: ${item.same}
                     </div>
                 `;
                 resultList.appendChild(li);

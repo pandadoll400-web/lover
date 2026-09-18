@@ -10,8 +10,8 @@
     <!-- Screen 1: Login -->
     <div id="screen1" class="screen">
         <div class="login-box">
-            <div class="icon">💖</div>
-            <h1>러브러브</h1>
+            <div class="icon" id="mainIcon" style="cursor: pointer; user-select: none;">💖</div>
+            <h1 id="mainTitle">러브러브</h1>
             <p>비밀 유지를 위해 로그인하세요.</p>
             <input type="text" id="userName" placeholder="이름 (본인 이름)">
             <input type="password" id="dummyPassword" placeholder="비밀번호 (6자 이상)">
@@ -26,6 +26,7 @@
             <h2>모드를 선택하세요</h2>
             <button id="modeSurveyBtn">나의 대한 생각</button>
             <button id="modeQuizBtn">개발자(문주왕)에 대한 퀴즈</button>
+            <button id="modeHateBtn" style="display: none; background-color: #8e44ad;">Hate 모드</button>
         </div>
     </div>
 
@@ -77,13 +78,25 @@
         </div>
     </div>
 
+    <!-- Screen Hate: Enter disliked friends -->
+    <div id="screenHate" class="screen" style="display: none;">
+        <div class="login-box" style="width: 90%; max-width: 400px; border-color: #8e44ad;">
+            <div class="icon">😈</div>
+            <h2>비밀스럽게 알려주세요...</h2>
+            <input type="text" id="hateOpposite" placeholder="반에서 싫어하는 이성 친구">
+            <input type="text" id="hateSame" placeholder="반에서 싫어하는 동성 친구">
+            <button id="submitHateBtn" style="background-color: #8e44ad;">확인</button>
+        </div>
+    </div>
+
     <!-- Screen 4: Admin (Result) -->
     <div id="screen4" class="screen" style="display: none;">
         <div class="login-box result-box" style="width: 90%; max-width: 500px;">
             <h2>비밀 목록 🤫</h2>
             <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                <button id="tabSurvey" style="background-color: #e74c3c;">설문 결과</button>
-                <button id="tabQuiz" style="background-color: #3498db;">퀴즈 결과</button>
+                <button id="tabSurvey" style="background-color: #e74c3c; flex: 1; padding: 10px; font-size: 13px;">설문 결과</button>
+                <button id="tabQuiz" style="background-color: #3498db; flex: 1; padding: 10px; font-size: 13px;">퀴즈 결과</button>
+                <button id="tabHate" style="background-color: #8e44ad; flex: 1; padding: 10px; font-size: 13px;">헤잇 결과</button>
             </div>
             <ul id="resultList"></ul>
             <button id="backBtn">처음으로</button>

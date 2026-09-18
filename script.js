@@ -29,13 +29,12 @@ const loginBtn = document.getElementById('loginBtn');
 // Mode Selection
 const modeSurveyBtn = document.getElementById('modeSurveyBtn');
 const modeQuizBtn = document.getElementById('modeQuizBtn');
-const secretBtnMode = document.getElementById('secretBtnMode');
+const secretIconMode = document.getElementById('secretIconMode');
 
 // Survey
 const surveyTitle = document.getElementById('surveyTitle');
 const surveyInput = document.getElementById('surveyInput');
 const nextSurveyBtn = document.getElementById('nextSurveyBtn');
-const secretBtn = document.getElementById('secretBtn');
 
 // Quiz
 const quizTitle = document.getElementById('quizTitle');
@@ -43,7 +42,6 @@ const quizInput = document.getElementById('quizInput');
 const nextQuizBtn = document.getElementById('nextQuizBtn');
 const livesDisplay = document.getElementById('livesDisplay');
 const retryQuizBtn = document.getElementById('retryQuizBtn');
-const secretBtnQuiz = document.getElementById('secretBtnQuiz');
 
 // Admin
 const resultList = document.getElementById('resultList');
@@ -232,9 +230,7 @@ async function openAdmin() {
     }
 }
 
-secretBtn.addEventListener('click', openAdmin);
-secretBtnMode.addEventListener('click', openAdmin);
-secretBtnQuiz.addEventListener('click', openAdmin);
+secretIconMode.addEventListener('click', openAdmin);
 
 tabSurvey.addEventListener('click', () => {
     tabSurvey.style.backgroundColor = '#e74c3c';

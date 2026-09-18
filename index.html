@@ -1,95 +1,102 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>달걀 도둑 3D - 펫 키우기 스피드런</title>
+    <title>러브러브</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="ui">
-                <div id="stats">
-            <h2>💰 코인: <span id="coinCount">0</span></h2>
-            <h2>💸 초당 수입: <span id="coinRate">0</span>/s</h2>
-            <hr>
-            <h2>⚡ 스피드 레벨: <span id="speedLevel">1</span></h2>
-            <div id="xpBarContainer">
-                <div id="xpBar"></div>
+    <!-- Screen 1: Login -->
+    <div id="screen1" class="screen">
+        <div class="login-box">
+            <div class="icon">💖</div>
+            <h1>러브러브</h1>
+            <p>비밀 유지를 위해 로그인하세요.</p>
+            <input type="text" id="userName" placeholder="이름 (본인 이름)">
+            <input type="password" id="dummyPassword" placeholder="비밀번호 (6자 이상)">
+            <button id="loginBtn">로그인</button>
+        </div>
+    </div>
+
+    <!-- Screen Mode: Select Mode -->
+    <div id="screenMode" class="screen" style="display: none;">
+        <div class="login-box">
+            <div class="icon">🎮</div>
+            <h2>모드를 선택하세요</h2>
+            <button id="modeSurveyBtn">나의 대한 생각</button>
+            <button id="modeQuizBtn">개발자(문주왕)에 대한 퀴즈</button>
+            <br>
+            <button id="secretBtnMode" class="secret-btn">????</button>
+        </div>
+    </div>
+
+    <!-- Screen 2: Survey (Step-by-step) -->
+    <div id="screen2" class="screen" style="display: none;">
+        <div class="login-box" style="width: 90%; max-width: 400px;">
+            <div class="icon">📝</div>
+            <h2 id="surveyTitle">질문</h2>
+            <input type="text" id="surveyInput" placeholder="답변을 입력하세요">
+            <button id="nextSurveyBtn">다음</button>
+        </div>
+    </div>
+
+    <!-- Screen 3: Share (Survey Complete) -->
+    <div id="screen3" class="screen" style="display: none;">
+        <div class="login-box">
+            <h2>반에서 가장 조용한 친구에게 공유해주세요!</h2>
+            <p>친구에게 링크를 전달해서 마음을 테스트해보세요.</p>
+            <button id="secretBtn" class="secret-btn">????</button>
+        </div>
+    </div>
+
+    <!-- Screen Quiz: Quiz Step-by-step -->
+    <div id="screenQuiz" class="screen" style="display: none;">
+        <div class="login-box" style="width: 90%; max-width: 400px;">
+            <div class="icon">🤔</div>
+            <div id="livesDisplay" style="color: #ffb6c1; margin-bottom: 10px; font-weight: bold;">남은 목숨: ❤️❤️❤️</div>
+            <h2 id="quizTitle">질문</h2>
+            <input type="text" id="quizInput" placeholder="정답을 입력하세요">
+            <button id="nextQuizBtn">다음</button>
+        </div>
+    </div>
+
+    <!-- Screen Quiz Fail -->
+    <div id="screenQuizFail" class="screen" style="display: none;">
+        <div class="login-box">
+            <div class="icon">❌</div>
+            <h2>다시!</h2>
+            <p>틀린 문제가 있습니다.</p>
+            <button id="retryQuizBtn">다시 도전하기</button>
+        </div>
+    </div>
+
+    <!-- Screen Quiz Success -->
+    <div id="screenQuizSuccess" class="screen" style="display: none;">
+        <div class="login-box">
+            <div class="icon">🎉</div>
+            <h2>정답입니다!</h2>
+            <p>문주왕에 대해 아주 잘 알고 계시군요!</p>
+            <button id="secretBtnQuiz" class="secret-btn">????</button>
+        </div>
+    </div>
+
+    <!-- Screen 4: Admin (Result) -->
+    <div id="screen4" class="screen" style="display: none;">
+        <div class="login-box result-box" style="width: 90%; max-width: 500px;">
+            <h2>비밀 목록 🤫</h2>
+            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                <button id="tabSurvey" style="background-color: #e74c3c;">설문 결과</button>
+                <button id="tabQuiz" style="background-color: #3498db;">퀴즈 결과</button>
             </div>
-            <p id="xpText">0 / 36,000 경험치</p>
-            <div id="alertBox"></div>
-        </div>
-
-        <button id="btnPetMenu">🐶 펫 보관함</button>
-
-        <!-- 로블록스 스타일 핫바 (인벤토리) -->
-        <div id="hotbar">
-            <div class="slot active" id="slot1"><span class="key">1</span><div class="item"></div></div>
-            <div class="slot" id="slot2"><span class="key">2</span><div class="item"></div></div>
-            <div class="slot" id="slot3"><span class="key">3</span><div class="item"></div></div>
-            <div class="slot" id="slot4"><span class="key">4</span><div class="item"></div></div>
-            <div class="slot" id="slot5"><span class="key">5</span><div class="item"></div></div>
-        </div>
-
-        <div id="interactionPrompt" style="display: none; position:absolute; bottom:100px; left:50%; transform:translateX(-50%); font-size:24px; font-weight:bold; color:white; text-shadow:2px 2px 4px black; z-index:10;">[E] 상호작용</div>
-        
-        <div id="shopUi" style="display: none; padding:20px; text-align:center; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,0.8); border-radius:10px; z-index:1000; width:400px; color:white;">
-    <h2>상점 - 런닝머신</h2>
-    <p style="margin-bottom:20px; font-size:14px; color:#ddd;">자동 스피드 경험치 획득 장치를 업그레이드하세요!</p>
-    
-    <div style="margin-bottom:20px; padding:15px; background:rgba(255,255,255,0.1); border-radius:10px; text-align:left;">
-        <div id="shopTreadmillName" style="font-size:22px; font-weight:bold; color:gold; margin-bottom:10px;">나무 런닝머신</div>
-        <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-            <span>현재 등급:</span>
-            <span id="shopCurrentTier">없음</span>
-        </div>
-        <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-            <span>경험치 배율:</span>
-            <span id="shopMultiplier">1x</span>
-        </div>
-        <div style="display:flex; justify-content:space-between; color:#ffdd44; font-weight:bold;">
-            <span>업그레이드 비용:</span>
-            <span id="shopCost">50 코인</span>
+            <ul id="resultList"></ul>
+            <button id="backBtn">처음으로</button>
         </div>
     </div>
 
-    <button id="btnBuyTreadmill" style="width:100%; padding:15px; font-size:18px; font-weight:bold; background:gold; border:none; border-radius:10px; cursor:pointer; color:#000; margin-bottom:10px;">런닝머신 구매/강화</button>
-    <button id="btnCloseShop" style="width:100%; background:#555; color:white; border:none; padding:10px; border-radius:5px; cursor:pointer;">닫기</button>
-</div>
-        </div>
-
-        
-    <div id="treadmillStatus" style="position:absolute; right:20px; bottom:20px; z-index:10;">
-        
-        <div id="treadmillHint" style="display: none; font-size:18px; font-weight:bold; color:white; text-shadow:1px 1px 2px black;">[E] 타기/내리기</div>
-    </div>
-<div id="trainingUi" style="display: none; position:absolute; bottom:150px; left:50%; transform:translateX(-50%); text-align:center; color:white; text-shadow:2px 2px 4px black; z-index:10;">
-    <h1 style="font-size:36px; margin:0; color:gold;">훈련 중!</h1>
-    <p style="font-size:18px; margin:5px 0;">이동 키(W,A,S,D)를 눌러 경험치를 올리세요!</p>
-    <p id="trainingXp" style="font-size:24px; font-weight:bold; color:#00ff00; margin:0;">+0 경험치</p>
-</div>
-        
-        <div id="crosshair"></div>
-        
-        <!-- 펫 플로팅 라벨 컨테이너 -->
-        <div id="petLabelsContainer"></div>
-    </div>
-    
-    <!-- 펫 장착 모달 -->
-    <div id="petModal" style="display: none;">
-        <div class="modal-content">
-            <h2>🐶 펫 보관함</h2>
-            <button id="btnEquipBest" class="btn-primary">✨ 최고 등급 장착</button>
-            <button id="btnClosePet" class="btn-secondary">닫기</button>
-            <div id="petList"></div>
-        </div>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="game.js"></script>
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
-
-
-
-

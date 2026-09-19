@@ -12,10 +12,6 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 // Screens
-const screenIntro = document.getElementById('screenIntro');
-const introVideo = document.getElementById('introVideo');
-const startIntroOverlay = document.getElementById('startIntroOverlay');
-
 const screen1 = document.getElementById('screen1');
 const screenMode = document.getElementById('screenMode');
 const screen2 = document.getElementById('screen2');
@@ -90,27 +86,8 @@ const quizQuestions = [
 ];
 
 function showScreen(screen) {
-    [screenIntro, screen1, screenMode, screen2, screen3, screenQuiz, screenQuizFail, screenQuizSuccess, screenHate, screen4].forEach(s => s.style.display = 'none');
+    [screen1, screenMode, screen2, screen3, screenQuiz, screenQuizFail, screenQuizSuccess, screenHate, screen4].forEach(s => s.style.display = 'none');
     screen.style.display = 'flex';
-}
-
-// --- Init: Intro Video ---
-if (localStorage.getItem('introPlayed') === 'true') {
-    showScreen(screen1);
-} else {
-    showScreen(screenIntro);
-    startIntroOverlay.addEventListener('click', () => {
-        startIntroOverlay.style.display = 'none';
-        introVideo.play().catch(e => {
-            console.error("Video play failed:", e);
-            showScreen(screen1); // fallback
-        });
-    });
-    
-    introVideo.addEventListener('ended', () => {
-        localStorage.setItem('introPlayed', 'true');
-        showScreen(screen1);
-    });
 }
 
 // 0. Easter Egg

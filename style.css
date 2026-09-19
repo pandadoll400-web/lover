@@ -1,13 +1,16 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: #ffb6c1; /* 핑크 배경 */
-    font-family: 'Malgun Gothic', sans-serif;
+    font-family: 'Pretendard', sans-serif;
+    user-select: none;
+    background: url('bg.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #333;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    color: #fff;
+    overflow: hidden;
 }
 
 .screen {

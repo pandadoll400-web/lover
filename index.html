@@ -16,6 +16,7 @@
             <input type="text" id="userName" placeholder="이름 (본인 이름)">
             <input type="password" id="dummyPassword" placeholder="비밀번호 (6자 이상)">
             <button id="loginBtn">로그인</button>
+            <button id="modeCollabBtn" style="background-color: #27ae60; margin-top: 10px;">내 짝을 찾아서 (콜라보 모드)</button>
         </div>
     </div>
 
@@ -89,14 +90,35 @@
         </div>
     </div>
 
+    <!-- Screen Collab: Survey -->
+    <div id="screenCollab" class="screen" style="display: none;">
+        <div class="login-box" style="width: 90%; max-width: 400px; border-color: #27ae60;">
+            <div class="icon">🎨</div>
+            <h2 id="collabTitle">질문</h2>
+            <input type="text" id="collabInput" placeholder="답변을 입력하세요">
+            <button id="nextCollabBtn" style="background-color: #27ae60;">다음</button>
+        </div>
+    </div>
+
+    <!-- Screen Collab Result -->
+    <div id="screenCollabResult" class="screen" style="display: none;">
+        <div class="login-box" style="border-color: #27ae60;">
+            <div class="icon">✅</div>
+            <h2>완료</h2>
+            <p id="collabMatchInfo" style="font-size: 18px; font-weight: bold; color: #27ae60;">확인 중...</p>
+            <button id="collabHomeBtn" style="background-color: #27ae60; margin-top: 15px;">처음으로</button>
+        </div>
+    </div>
+
     <!-- Screen 4: Admin (Result) -->
     <div id="screen4" class="screen" style="display: none;">
         <div class="login-box result-box" style="width: 90%; max-width: 500px;">
             <h2>비밀 목록 🤫</h2>
-            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                <button id="tabSurvey" style="background-color: #e74c3c; flex: 1; padding: 10px; font-size: 13px;">설문 결과</button>
-                <button id="tabQuiz" style="background-color: #3498db; flex: 1; padding: 10px; font-size: 13px;">퀴즈 결과</button>
-                <button id="tabHate" style="background-color: #8e44ad; flex: 1; padding: 10px; font-size: 13px;">헤잇 결과</button>
+            <div style="display: flex; gap: 5px; margin-bottom: 15px; flex-wrap: wrap;">
+                <button id="tabSurvey" style="background-color: #e74c3c; flex: 1; padding: 10px; font-size: 12px; min-width: 80px;">설문 결과</button>
+                <button id="tabQuiz" style="background-color: #3498db; flex: 1; padding: 10px; font-size: 12px; min-width: 80px;">퀴즈 결과</button>
+                <button id="tabHate" style="background-color: #8e44ad; flex: 1; padding: 10px; font-size: 12px; min-width: 80px;">헤잇 결과</button>
+                <button id="tabCollab" style="background-color: #27ae60; flex: 1; padding: 10px; font-size: 12px; min-width: 80px;">콜라보</button>
             </div>
             <ul id="resultList"></ul>
             <button id="backBtn">처음으로</button>

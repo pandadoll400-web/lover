@@ -105,7 +105,9 @@ const quizQuestions = [
 ];
 
 function showScreen(screen) {
-    [screenIntro, screen1, screenMode, screen2, screen3, screenQuiz, screenQuizFail, screenQuizSuccess, screenHate, screenCollab, screenCollabResult, screen4].forEach(s => s.style.display = 'none');
+    [screen1, screenMode, screen2, screen3, screenQuiz, screenQuizFail, screenQuizSuccess, screenHate, screenCollab, screenCollabResult, screen4].forEach(s => {
+        if (s) s.style.display = 'none';
+    });
     screen.style.display = 'flex';
 }
 

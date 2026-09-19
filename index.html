@@ -7,8 +7,19 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Intro Video Screen -->
+    <div id="screenIntro" class="screen" style="display: none; z-index: 9999; background: black; position: fixed; top: 0; left: 0; width: 100%; height: 100%;">
+        <video id="introVideo" style="width: 100%; height: 100%; object-fit: contain;" playsinline>
+            <source src="Angels_and_demons_fighting_20260919114410.mp4" type="video/mp4">
+        </video>
+        <div id="startIntroOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.8); color: white; cursor: pointer; font-size: 20px; font-weight: bold; flex-direction: column;">
+            <div>화면을 터치해서 시작하세요</div>
+            <div style="font-size: 12px; margin-top: 10px; color: #ccc;">(소리가 재생될 수 있습니다)</div>
+        </div>
+    </div>
+
     <!-- Screen 1: Login -->
-    <div id="screen1" class="screen">
+    <div id="screen1" class="screen" style="display: none;">
         <div class="login-box">
             <div class="icon" id="mainIcon" style="cursor: pointer; user-select: none;">💖</div>
             <h1 id="mainTitle">러브러브</h1>

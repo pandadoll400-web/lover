@@ -3,8 +3,8 @@ body {
     padding: 0;
     font-family: 'Pretendard', sans-serif;
     user-select: none;
-    background: url('bg.jpg') no-repeat center center fixed;
-    background-size: cover;
+    background: #363e52 url('bg_moon.jpg') no-repeat center center fixed;
+    background-size: contain;
     color: #333;
     display: flex;
     justify-content: center;

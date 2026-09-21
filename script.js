@@ -20,8 +20,8 @@ const screenQuiz = document.getElementById('screenQuiz');
 const screenQuizFail = document.getElementById('screenQuizFail');
 const screenQuizSuccess = document.getElementById('screenQuizSuccess');
 const screenHate = document.getElementById('screenHate');
-const screenCollab = document.getElementById('screenCollab');
-const screenCollabResult = document.getElementById('screenCollabResult');
+const screenWish = document.getElementById('screenWish');
+const screenWishResult = document.getElementById('screenWishResult');
 const screen4 = document.getElementById('screen4');
 
 // Login & Easter Egg
@@ -60,27 +60,17 @@ const backBtn = document.getElementById('backBtn');
 const tabSurvey = document.getElementById('tabSurvey');
 const tabQuiz = document.getElementById('tabQuiz');
 const tabHate = document.getElementById('tabHate');
-const tabCollab = document.getElementById('tabCollab');
+const tabWish = document.getElementById('tabWish');
 
-// Collab Mode Variables
-const modeCollabBtn = document.getElementById('modeCollabBtn');
-const collabTitle = document.getElementById('collabTitle');
-const collabInput = document.getElementById('collabInput');
-const nextCollabBtn = document.getElementById('nextCollabBtn');
-const collabMatchInfo = document.getElementById('collabMatchInfo');
-const collabHomeBtn = document.getElementById('collabHomeBtn');
+// Wish Mode Variables
+const modeWishBtn = document.getElementById('modeWishBtn');
+const wishInput = document.getElementById('wishInput');
+const submitWishBtn = document.getElementById('submitWishBtn');
+const wishHomeBtn = document.getElementById('wishHomeBtn');
 
 let currentUser = "";
 let heartClickCount = 0;
 let isHateModeActive = false;
-
-// --- Collab Data ---
-let collabStep = 0;
-const collabData = { color: "", heart: "" };
-const collabQuestions = [
-    { key: "color", title: "좋아하는 색깔은? 🎨", placeholder: "색깔을 적어주세요" },
-    { key: "heart", title: "하트색깔은 무엇인가요? ❤️", placeholder: "하트색깔을 적어주세요" }
-];
 
 // --- Survey Data ---
 let surveyStep = 0;
@@ -105,7 +95,7 @@ const quizQuestions = [
 ];
 
 function showScreen(screen) {
-    [screen1, screenMode, screen2, screen3, screenQuiz, screenQuizFail, screenQuizSuccess, screenHate, screenCollab, screenCollabResult, screen4].forEach(s => {
+    [screen1, screenMode, screen2, screen3, screenQuiz, screenQuizFail, screenQuizSuccess, screenHate, screenWish, screenWishResult, screen4].forEach(s => {
         if (s) s.style.display = 'none';
     });
     screen.style.display = 'flex';
@@ -118,6 +108,7 @@ mainIcon.addEventListener('click', () => {
         isHateModeActive = true;
         mainIcon.innerText = "💔";
         mainTitle.innerText = "헤잇헤잇";
+        document.body.style.background = "none";
         document.body.style.backgroundColor = "#9b59b6"; // Purple background
         modeHateBtn.style.display = "inline-block";
     }
@@ -155,74 +146,53 @@ modeHateBtn.addEventListener('click', () => {
     showScreen(screenHate);
 });
 
-modeCollabBtn.addEventListener('click', () => {
+modeWishBtn.addEventListener('click', () => {
     const name = userNameInput.value.trim();
     if (!name) {
         alert("먼저 이름을 입력해주세요!");
         return;
     }
+    
+    if (localStorage.getItem('wishSubmitted') === 'true') {
+        alert("이미 소원을 빌었습니다! 달님이 소원을 들어줄 때까지 기다려보세요. 🌕");
+        return;
+    }
+
     currentUser = name;
-    collabStep = 0;
-    updateCollabUI();
-    showScreen(screenCollab);
+    wishInput.value = "";
+    showScreen(screenWish);
 });
 
-// 2.5 Collab Logic
-function updateCollabUI() {
-    const q = collabQuestions[collabStep];
-    collabTitle.innerText = q.title;
-    collabInput.value = "";
-    collabInput.placeholder = q.placeholder;
-    nextCollabBtn.innerText = (collabStep === collabQuestions.length - 1) ? "완료" : "다음";
-}
-
-nextCollabBtn.addEventListener('click', async () => {
-    const val = collabInput.value.trim();
+// 2.5 Wish Logic
+submitWishBtn.addEventListener('click', async () => {
+    const val = wishInput.value.trim();
     if (!val) {
-        alert("답변을 입력해주세요!");
+        alert("소원을 입력해주세요!");
         return;
     }
     
-    const currentKey = collabQuestions[collabStep].key;
-    collabData[currentKey] = val;
-    
-    if (collabStep === collabQuestions.length - 1) {
-        const originalText = nextCollabBtn.innerText;
-        nextCollabBtn.innerText = "저장 중...";
-        nextCollabBtn.disabled = true;
+    const originalText = submitWishBtn.innerText;
+    submitWishBtn.innerText = "비는 중...";
+    submitWishBtn.disabled = true;
 
-        try {
-            await db.collection("collabs").add({
-                name: currentUser,
-                color: collabData.color,
-                heart: collabData.heart,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            
-            // 똑같은 사람 찾기
-            const snapshot = await db.collection("collabs")
-                .where("color", "==", collabData.color)
-                .where("heart", "==", collabData.heart)
-                .get();
-                
-            let matchCount = snapshot.size - 1; // 자기 자신 제외
-            if (matchCount < 0) matchCount = 0;
-            
-            collabMatchInfo.innerText = `자기랑 똑같은 사람이 ${matchCount}명 있습니다!`;
-            showScreen(screenCollabResult);
-        } catch (e) {
-            alert("저장에 실패했습니다.");
-        } finally {
-            nextCollabBtn.innerText = originalText;
-            nextCollabBtn.disabled = false;
-        }
-    } else {
-        collabStep++;
-        updateCollabUI();
+    try {
+        await db.collection("wishes").add({
+            name: currentUser,
+            wish: val,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        
+        localStorage.setItem('wishSubmitted', 'true');
+        showScreen(screenWishResult);
+    } catch (e) {
+        alert("소원 전달에 실패했습니다. 달님이 바쁘신가 봅니다.");
+    } finally {
+        submitWishBtn.innerText = originalText;
+        submitWishBtn.disabled = false;
     }
 });
 
-collabHomeBtn.addEventListener('click', () => {
+wishHomeBtn.addEventListener('click', () => {
     userNameInput.value = '';
     dummyPasswordInput.value = '';
     showScreen(screen1);
@@ -421,16 +391,16 @@ tabHate.addEventListener('click', () => {
     loadAdminData('hate');
 });
 
-tabCollab.addEventListener('click', () => {
+tabWish.addEventListener('click', () => {
     tabSurvey.style.backgroundColor = '#e74c3c';
     tabQuiz.style.backgroundColor = '#3498db';
     tabHate.style.backgroundColor = '#8e44ad';
-    tabCollab.style.backgroundColor = '#27ae60';
+    tabWish.style.backgroundColor = '#f1c40f';
     tabSurvey.style.opacity = '0.5';
     tabQuiz.style.opacity = '0.5';
     tabHate.style.opacity = '0.5';
-    tabCollab.style.opacity = '1';
-    loadAdminData('collab');
+    tabWish.style.opacity = '1';
+    loadAdminData('wish');
 });
 
 async function loadAdminData(type) {
@@ -504,22 +474,21 @@ async function loadAdminData(type) {
                 `;
                 resultList.appendChild(li);
             });
-        } else if (type === 'collab') {
-            // 콜라보 결과 불러오기
-            const querySnapshot = await db.collection("collabs").orderBy("timestamp", "desc").get();
+        } else if (type === 'wish') {
+            // 소원 결과 불러오기
+            const querySnapshot = await db.collection("wishes").orderBy("timestamp", "desc").get();
             resultList.innerHTML = '';
             if (querySnapshot.empty) {
-                resultList.innerHTML = '<li>아직 짝을 찾은 사람이 없습니다.</li>';
+                resultList.innerHTML = '<li>아직 소원을 빈 사람이 없습니다.</li>';
                 return;
             }
             querySnapshot.forEach((doc) => {
                 const item = doc.data();
                 const li = document.createElement('li');
                 li.innerHTML = `
-                    <div style="color: #27ae60; font-weight: bold; font-size: 16px; margin-bottom: 5px;">${item.name} 님</div>
-                    <div style="font-size: 13px; color: #ccc; line-height: 1.6;">
-                        🎨 좋아하는 색깔: ${item.color}<br>
-                        ❤️ 하트 색깔: ${item.heart}
+                    <div style="color: #f1c40f; font-weight: bold; font-size: 16px; margin-bottom: 5px;">${item.name} 님의 소원</div>
+                    <div style="font-size: 14px; color: #fff; line-height: 1.6; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 5px;">
+                        🌕 "${item.wish}"
                     </div>
                 `;
                 resultList.appendChild(li);

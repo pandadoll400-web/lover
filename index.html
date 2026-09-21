@@ -3,24 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>러브러브 X 스플래툰</title>
+    <title>러브러브</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- Screen 1: Login -->
     <div id="screen1" class="screen">
         <div class="login-box">
-            <div class="icon" id="mainIcon" style="cursor: pointer; user-select: none; display: flex; align-items: center; justify-content: center; gap: 15px;">
-                <div style="font-size: 50px; line-height: 1;">💖</div>
-                <div style="font-size: 24px; font-weight: bold; color: #555;">X</div>
-                <img src="icon.png" alt="Icon" style="width: 70px; height: 70px; border-radius: 15px; display: block;">
-            </div>
-            <h1 id="mainTitle">러브러브 X 스플래툰</h1>
+            <div class="icon" id="mainIcon" style="cursor: pointer; user-select: none;">💖</div>
+            <h1 id="mainTitle">러브러브</h1>
             <p>비밀 유지를 위해 로그인하세요.</p>
             <input type="text" id="userName" placeholder="이름 (본인 이름)">
             <input type="password" id="dummyPassword" placeholder="비밀번호 (6자 이상)">
             <button id="loginBtn">로그인</button>
-            <button id="modeCollabBtn" style="background-color: #27ae60; margin-top: 10px;">내 짝을 찾아서 (콜라보 모드)</button>
+            <button id="modeWishBtn" style="background-color: #f1c40f; margin-top: 10px; color: #333;">한가위 달빛 소원 🌕</button>
         </div>
     </div>
 
@@ -94,23 +90,23 @@
         </div>
     </div>
 
-    <!-- Screen Collab: Survey -->
-    <div id="screenCollab" class="screen" style="display: none;">
-        <div class="login-box" style="width: 90%; max-width: 400px; border-color: #27ae60;">
-            <div class="icon">🎨</div>
-            <h2 id="collabTitle">질문</h2>
-            <input type="text" id="collabInput" placeholder="답변을 입력하세요">
-            <button id="nextCollabBtn" style="background-color: #27ae60;">다음</button>
+    <!-- Screen Wish: Entry -->
+    <div id="screenWish" class="screen" style="display: none;">
+        <div class="login-box" style="width: 90%; max-width: 400px; border-color: #f1c40f;">
+            <div class="icon">🌕</div>
+            <h2>올해의 소원은 무엇인가요?</h2>
+            <textarea id="wishInput" placeholder="달님에게 빌 소원을 적어주세요..." style="width: 100%; height: 100px; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; resize: none; font-family: 'Pretendard', sans-serif;"></textarea>
+            <button id="submitWishBtn" style="background-color: #f1c40f; color: #333;">소원 빌기</button>
         </div>
     </div>
 
-    <!-- Screen Collab Result -->
-    <div id="screenCollabResult" class="screen" style="display: none;">
-        <div class="login-box" style="border-color: #27ae60;">
-            <div class="icon">✅</div>
+    <!-- Screen Wish Result -->
+    <div id="screenWishResult" class="screen" style="display: none;">
+        <div class="login-box" style="border-color: #f1c40f;">
+            <div class="icon">✨</div>
             <h2>완료</h2>
-            <p id="collabMatchInfo" style="font-size: 18px; font-weight: bold; color: #27ae60;">확인 중...</p>
-            <button id="collabHomeBtn" style="background-color: #27ae60; margin-top: 15px;">처음으로</button>
+            <p style="font-size: 16px; font-weight: bold; color: #f1c40f;">소원이 달님에게 전달되었습니다! 🌕</p>
+            <button id="wishHomeBtn" style="background-color: #f1c40f; color: #333; margin-top: 15px;">처음으로</button>
         </div>
     </div>
 
@@ -122,7 +118,7 @@
                 <button id="tabSurvey" style="background-color: #e74c3c; flex: 1; padding: 10px; font-size: 12px; min-width: 80px;">설문 결과</button>
                 <button id="tabQuiz" style="background-color: #3498db; flex: 1; padding: 10px; font-size: 12px; min-width: 80px;">퀴즈 결과</button>
                 <button id="tabHate" style="background-color: #8e44ad; flex: 1; padding: 10px; font-size: 12px; min-width: 80px;">헤잇 결과</button>
-                <button id="tabCollab" style="background-color: #27ae60; flex: 1; padding: 10px; font-size: 12px; min-width: 80px;">콜라보</button>
+                <button id="tabWish" style="background-color: #f1c40f; color: #333; flex: 1; padding: 10px; font-size: 12px; min-width: 80px;">소원</button>
             </div>
             <ul id="resultList"></ul>
             <button id="backBtn">처음으로</button>

@@ -359,11 +359,11 @@ tabSurvey.addEventListener('click', () => {
     tabSurvey.style.backgroundColor = '#e74c3c';
     tabQuiz.style.backgroundColor = '#3498db';
     tabHate.style.backgroundColor = '#8e44ad';
-    tabCollab.style.backgroundColor = '#27ae60';
+    tabWish.style.backgroundColor = '#f1c40f';
     tabSurvey.style.opacity = '1';
     tabQuiz.style.opacity = '0.5';
     tabHate.style.opacity = '0.5';
-    tabCollab.style.opacity = '0.5';
+    tabWish.style.opacity = '0.5';
     loadAdminData('survey');
 });
 
@@ -371,11 +371,11 @@ tabQuiz.addEventListener('click', () => {
     tabSurvey.style.backgroundColor = '#e74c3c';
     tabQuiz.style.backgroundColor = '#3498db';
     tabHate.style.backgroundColor = '#8e44ad';
-    tabCollab.style.backgroundColor = '#27ae60';
+    tabWish.style.backgroundColor = '#f1c40f';
     tabSurvey.style.opacity = '0.5';
     tabQuiz.style.opacity = '1';
     tabHate.style.opacity = '0.5';
-    tabCollab.style.opacity = '0.5';
+    tabWish.style.opacity = '0.5';
     loadAdminData('quiz');
 });
 
@@ -383,11 +383,11 @@ tabHate.addEventListener('click', () => {
     tabSurvey.style.backgroundColor = '#e74c3c';
     tabQuiz.style.backgroundColor = '#3498db';
     tabHate.style.backgroundColor = '#8e44ad';
-    tabCollab.style.backgroundColor = '#27ae60';
+    tabWish.style.backgroundColor = '#f1c40f';
     tabSurvey.style.opacity = '0.5';
     tabQuiz.style.opacity = '0.5';
     tabHate.style.opacity = '1';
-    tabCollab.style.opacity = '0.5';
+    tabWish.style.opacity = '0.5';
     loadAdminData('hate');
 });
 

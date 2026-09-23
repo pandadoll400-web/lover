@@ -22,6 +22,7 @@ const screenQuizSuccess = document.getElementById('screenQuizSuccess');
 const screenHate = document.getElementById('screenHate');
 const screenWish = document.getElementById('screenWish');
 const screenWishResult = document.getElementById('screenWishResult');
+const screenOnion = document.getElementById('screenOnion');
 const screen4 = document.getElementById('screen4');
 
 // Login & Easter Egg
@@ -68,6 +69,17 @@ const wishInput = document.getElementById('wishInput');
 const submitWishBtn = document.getElementById('submitWishBtn');
 const wishHomeBtn = document.getElementById('wishHomeBtn');
 
+// Onion Mode Variables
+const modeOnionBtn = document.getElementById('modeOnionBtn');
+const onion1 = document.getElementById('onion1');
+const onion1Visual = document.getElementById('onion1Visual');
+const onion1Msg = document.getElementById('onion1Msg');
+const onion2 = document.getElementById('onion2');
+const onion2Visual = document.getElementById('onion2Visual');
+const onion2Msg = document.getElementById('onion2Msg');
+const onionOverlay = document.getElementById('onionOverlay');
+const onionHomeBtn = document.getElementById('onionHomeBtn');
+
 let currentUser = "";
 let heartClickCount = 0;
 let isHateModeActive = false;
@@ -95,7 +107,7 @@ const quizQuestions = [
 ];
 
 function showScreen(screen) {
-    [screen1, screenMode, screen2, screen3, screenQuiz, screenQuizFail, screenQuizSuccess, screenHate, screenWish, screenWishResult, screen4].forEach(s => {
+    [screen1, screenMode, screen2, screen3, screenQuiz, screenQuizFail, screenQuizSuccess, screenHate, screenWish, screenWishResult, screenOnion, screen4].forEach(s => {
         if (s) s.style.display = 'none';
     });
     screen.style.display = 'flex';
@@ -111,6 +123,8 @@ mainIcon.addEventListener('click', () => {
         document.body.style.background = "none";
         document.body.style.backgroundColor = "#9b59b6"; // Purple background
         modeHateBtn.style.display = "inline-block";
+        modeWishBtn.style.display = "none";
+        modeOnionBtn.style.display = "inline-block";
     }
 });
 
@@ -195,6 +209,53 @@ submitWishBtn.addEventListener('click', async () => {
 wishHomeBtn.addEventListener('click', () => {
     userNameInput.value = '';
     dummyPasswordInput.value = '';
+    showScreen(screen1);
+});
+
+// 2.6 Onion Logic
+let badClickCount = 0;
+const niceWords = ["예뻐!", "사랑해!", "넌 최고야!", "잘 자라라!", "고마워!"];
+const badWords = ["짜증나!", "미워!", "넌 최악이야!", "못생겼어!", "사라져!"];
+
+modeOnionBtn.addEventListener('click', () => {
+    showScreen(screenOnion);
+});
+
+onion1.addEventListener('click', () => {
+    onion1Visual.innerText = "🌱";
+    onion1Visual.style.transform = "scale(1.2)";
+    setTimeout(() => onion1Visual.style.transform = "scale(1)", 200);
+    onion1Msg.innerText = niceWords[Math.floor(Math.random() * niceWords.length)];
+});
+
+onion2.addEventListener('click', () => {
+    badClickCount++;
+    onion2Visual.innerText = "🧄"; 
+    
+    let grayscale = Math.min(100, badClickCount * 1); // gradually turn gray
+    onion2Visual.style.filter = `grayscale(${grayscale}%) sepia(${grayscale/2}%)`;
+    onion2Visual.style.transform = "scale(0.9)";
+    setTimeout(() => onion2Visual.style.transform = "scale(1)", 100);
+    
+    onion2Msg.innerText = badWords[Math.floor(Math.random() * badWords.length)];
+
+    if (badClickCount >= 200) {
+        onionOverlay.style.display = "flex";
+    }
+});
+
+onionOverlay.addEventListener('click', () => {
+    onionOverlay.style.display = "none";
+    badClickCount = 0;
+    onion2Visual.innerText = "🧅";
+    onion2Visual.style.filter = "none";
+    onion2Msg.innerText = "";
+    onion1Visual.innerText = "🧅";
+    onion1Msg.innerText = "";
+    showScreen(screen1);
+});
+
+onionHomeBtn.addEventListener('click', () => {
     showScreen(screen1);
 });
 

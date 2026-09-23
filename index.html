@@ -17,6 +17,7 @@
             <input type="password" id="dummyPassword" placeholder="비밀번호 (6자 이상)">
             <button id="loginBtn">로그인</button>
             <button id="modeWishBtn" style="background-color: #f1c40f; margin-top: 10px; color: #333;">한가위 달빛 소원 🌕</button>
+            <button id="modeOnionBtn" style="display: none; background-color: #2ecc71; margin-top: 10px; color: #fff;">양파 실험 🧅</button>
         </div>
     </div>
 
@@ -108,6 +109,32 @@
             <p style="font-size: 16px; font-weight: bold; color: #f1c40f; margin-bottom: 5px;">소원이 달님에게 전달되었습니다! 🌕</p>
             <p style="font-size: 12px; color: #e74c3c; font-style: italic; margin-top: 5px; margin-bottom: 15px;">...달에 균열이 생깁니다...</p>
             <button id="wishHomeBtn" style="background-color: #f1c40f; color: #333; margin-top: 15px;">처음으로</button>
+        </div>
+    </div>
+
+    <!-- Screen Onion -->
+    <div id="screenOnion" class="screen" style="display: none;">
+        <div class="login-box" style="width: 90%; max-width: 500px; border-color: #2ecc71; position: relative;">
+            <h2>양파 실험 🧅</h2>
+            <p style="font-size: 14px; color: #aaa;">양파에게 말을 걸어보세요.</p>
+            <div style="display: flex; justify-content: space-around; margin-top: 20px;">
+                <div id="onion1" style="cursor: pointer; text-align: center; flex: 1;">
+                    <div id="onion1Visual" style="font-size: 60px; transition: transform 0.2s;">🧅</div>
+                    <div style="margin-top: 10px; font-weight: bold; color: #2ecc71;">사랑 양파</div>
+                    <div id="onion1Msg" style="color: #27ae60; font-size: 14px; margin-top: 5px; height: 20px; font-weight: bold;"></div>
+                </div>
+                <div id="onion2" style="cursor: pointer; text-align: center; flex: 1;">
+                    <div id="onion2Visual" style="font-size: 60px; transition: filter 0.2s, transform 0.2s;">🧅</div>
+                    <div style="margin-top: 10px; font-weight: bold; color: #e74c3c;">미움 양파</div>
+                    <div id="onion2Msg" style="color: #e74c3c; font-size: 14px; margin-top: 5px; height: 20px; font-weight: bold;"></div>
+                </div>
+            </div>
+            <button id="onionHomeBtn" style="background-color: #2ecc71; margin-top: 30px;">처음으로</button>
+        </div>
+        
+        <!-- Jump scare overlay -->
+        <div id="onionOverlay" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: black; color: red; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; cursor: pointer;">
+            <h1 style="font-size: 40px; text-align: center; margin: 0;">당신은 다른가요?</h1>
         </div>
     </div>
 

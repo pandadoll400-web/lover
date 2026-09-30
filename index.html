@@ -16,7 +16,7 @@
             <input type="text" id="userName" placeholder="이름 (본인 이름)">
             <input type="password" id="dummyPassword" placeholder="비밀번호 (6자 이상)">
             <button id="loginBtn">로그인</button>
-            <button id="modeWishBtn" style="background-color: #f1c40f; margin-top: 10px; color: #333;">한가위 달빛 소원 🌕</button>
+            <button id="modeTrickBtn" style="background-color: #e67e22; margin-top: 10px; color: #fff;">트릭 오어 트릿 🍬</button>
             <button id="modeOnionBtn" style="display: none; background-color: #2ecc71; margin-top: 10px; color: #fff;">양파 실험 🧅</button>
         </div>
     </div>
@@ -91,24 +91,23 @@
         </div>
     </div>
 
-    <!-- Screen Wish: Entry -->
-    <div id="screenWish" class="screen" style="display: none;">
-        <div class="login-box" style="width: 90%; max-width: 400px; border-color: #f1c40f;">
-            <div class="icon">🌕</div>
-            <h2>올해의 소원은 무엇인가요?</h2>
-            <textarea id="wishInput" placeholder="달님에게 빌 소원을 적어주세요..." style="width: 100%; height: 100px; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; resize: none; font-family: 'Pretendard', sans-serif;"></textarea>
-            <button id="submitWishBtn" style="background-color: #f1c40f; color: #333;">소원 빌기</button>
+    <!-- Screen Trick: Entry -->
+    <div id="screenTrick" class="screen" style="display: none;">
+        <div class="login-box" style="width: 90%; max-width: 400px; border-color: #e67e22;">
+            <div class="icon">🎃</div>
+            <h2>누구에게 선물을 주고 싶나요?</h2>
+            <input type="text" id="trickInput" placeholder="선물 받을 친구 이름">
+            <button id="submitTrickBtn" style="background-color: #e67e22; color: #fff;">선물 보내기</button>
         </div>
     </div>
 
-    <!-- Screen Wish Result -->
-    <div id="screenWishResult" class="screen" style="display: none;">
-        <div class="login-box" style="border-color: #f1c40f;">
-            <div class="icon">✨</div>
-            <h2>완료</h2>
-            <p style="font-size: 16px; font-weight: bold; color: #f1c40f; margin-bottom: 5px;">소원이 달님에게 전달되었습니다! 🌕</p>
-            <p style="font-size: 12px; color: #e74c3c; font-style: italic; margin-top: 5px; margin-bottom: 15px;">...달에 균열이 생깁니다...</p>
-            <button id="wishHomeBtn" style="background-color: #f1c40f; color: #333; margin-top: 15px;">처음으로</button>
+    <!-- Screen Trick Result -->
+    <div id="screenTrickResult" class="screen" style="display: none;">
+        <div class="login-box" style="border-color: #e67e22;">
+            <div class="icon">🎁</div>
+            <h2>접수 완료!</h2>
+            <p style="font-size: 16px; font-weight: bold; color: #e67e22; margin-bottom: 15px;">개발자가 직접 찾아가서 전해줄게요!</p>
+            <button id="trickHomeBtn" style="background-color: #e67e22; color: #fff; margin-top: 15px;">처음으로</button>
         </div>
     </div>
 
@@ -146,7 +145,7 @@
                 <button id="tabSurvey" style="background-color: #e74c3c; flex: 1; padding: 10px; font-size: 12px; min-width: 80px;">설문 결과</button>
                 <button id="tabQuiz" style="background-color: #3498db; flex: 1; padding: 10px; font-size: 12px; min-width: 80px;">퀴즈 결과</button>
                 <button id="tabHate" style="background-color: #8e44ad; flex: 1; padding: 10px; font-size: 12px; min-width: 80px;">헤잇 결과</button>
-                <button id="tabWish" style="background-color: #f1c40f; color: #333; flex: 1; padding: 10px; font-size: 12px; min-width: 80px;">소원</button>
+                <button id="tabTrick" style="background-color: #e67e22; color: #fff; flex: 1; padding: 10px; font-size: 12px; min-width: 80px;">할로윈 선물</button>
             </div>
             <ul id="resultList"></ul>
             <button id="backBtn">처음으로</button>

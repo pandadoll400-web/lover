@@ -20,8 +20,8 @@ const screenQuiz = document.getElementById('screenQuiz');
 const screenQuizFail = document.getElementById('screenQuizFail');
 const screenQuizSuccess = document.getElementById('screenQuizSuccess');
 const screenHate = document.getElementById('screenHate');
-const screenWish = document.getElementById('screenWish');
-const screenWishResult = document.getElementById('screenWishResult');
+const screenTrick = document.getElementById('screenTrick');
+const screenTrickResult = document.getElementById('screenTrickResult');
 const screenOnion = document.getElementById('screenOnion');
 const screen4 = document.getElementById('screen4');
 
@@ -61,13 +61,13 @@ const backBtn = document.getElementById('backBtn');
 const tabSurvey = document.getElementById('tabSurvey');
 const tabQuiz = document.getElementById('tabQuiz');
 const tabHate = document.getElementById('tabHate');
-const tabWish = document.getElementById('tabWish');
+const tabTrick = document.getElementById('tabTrick');
 
-// Wish Mode Variables
-const modeWishBtn = document.getElementById('modeWishBtn');
-const wishInput = document.getElementById('wishInput');
-const submitWishBtn = document.getElementById('submitWishBtn');
-const wishHomeBtn = document.getElementById('wishHomeBtn');
+// Trick Mode Variables
+const modeTrickBtn = document.getElementById('modeTrickBtn');
+const trickInput = document.getElementById('trickInput');
+const submitTrickBtn = document.getElementById('submitTrickBtn');
+const trickHomeBtn = document.getElementById('trickHomeBtn');
 
 // Onion Mode Variables
 const modeOnionBtn = document.getElementById('modeOnionBtn');
@@ -107,7 +107,7 @@ const quizQuestions = [
 ];
 
 function showScreen(screen) {
-    [screen1, screenMode, screen2, screen3, screenQuiz, screenQuizFail, screenQuizSuccess, screenHate, screenWish, screenWishResult, screenOnion, screen4].forEach(s => {
+    [screen1, screenMode, screen2, screen3, screenQuiz, screenQuizFail, screenQuizSuccess, screenHate, screenTrick, screenTrickResult, screenOnion, screen4].forEach(s => {
         if (s) s.style.display = 'none';
     });
     screen.style.display = 'flex';
@@ -123,7 +123,7 @@ mainIcon.addEventListener('click', () => {
         document.body.style.background = "#fff8e7 url('bg_hate.jpg') no-repeat center center fixed";
         document.body.style.backgroundSize = "cover";
         modeHateBtn.style.display = "inline-block";
-        modeWishBtn.style.display = "none";
+        modeTrickBtn.style.display = "none";
         modeOnionBtn.style.display = "inline-block";
     }
 });
@@ -160,53 +160,53 @@ modeHateBtn.addEventListener('click', () => {
     showScreen(screenHate);
 });
 
-modeWishBtn.addEventListener('click', () => {
+modeTrickBtn.addEventListener('click', () => {
     const name = userNameInput.value.trim();
     if (!name) {
         alert("먼저 이름을 입력해주세요!");
         return;
     }
     
-    if (localStorage.getItem('wishSubmitted') === 'true') {
-        alert("이미 소원을 빌었습니다! 달님이 소원을 들어줄 때까지 기다려보세요. 🌕");
+    if (localStorage.getItem('trickSubmitted') === 'true') {
+        alert("이미 할로윈 선물을 보냈습니다! 🎃");
         return;
     }
 
     currentUser = name;
-    wishInput.value = "";
-    showScreen(screenWish);
+    trickInput.value = "";
+    showScreen(screenTrick);
 });
 
-// 2.5 Wish Logic
-submitWishBtn.addEventListener('click', async () => {
-    const val = wishInput.value.trim();
+// 2.5 Trick Logic
+submitTrickBtn.addEventListener('click', async () => {
+    const val = trickInput.value.trim();
     if (!val) {
-        alert("소원을 입력해주세요!");
+        alert("친구 이름을 입력해주세요!");
         return;
     }
     
-    const originalText = submitWishBtn.innerText;
-    submitWishBtn.innerText = "비는 중...";
-    submitWishBtn.disabled = true;
+    const originalText = submitTrickBtn.innerText;
+    submitTrickBtn.innerText = "보내는 중...";
+    submitTrickBtn.disabled = true;
 
     try {
-        await db.collection("wishes").add({
+        await db.collection("tricks").add({
             name: currentUser,
-            wish: val,
+            target: val,
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
         
-        localStorage.setItem('wishSubmitted', 'true');
-        showScreen(screenWishResult);
+        localStorage.setItem('trickSubmitted', 'true');
+        showScreen(screenTrickResult);
     } catch (e) {
-        alert("소원 전달에 실패했습니다. 달님이 바쁘신가 봅니다.");
+        alert("선물 전달에 실패했습니다.");
     } finally {
-        submitWishBtn.innerText = originalText;
-        submitWishBtn.disabled = false;
+        submitTrickBtn.innerText = originalText;
+        submitTrickBtn.disabled = false;
     }
 });
 
-wishHomeBtn.addEventListener('click', () => {
+trickHomeBtn.addEventListener('click', () => {
     userNameInput.value = '';
     dummyPasswordInput.value = '';
     showScreen(screen1);
@@ -452,16 +452,16 @@ tabHate.addEventListener('click', () => {
     loadAdminData('hate');
 });
 
-tabWish.addEventListener('click', () => {
+tabTrick.addEventListener('click', () => {
     tabSurvey.style.backgroundColor = '#e74c3c';
     tabQuiz.style.backgroundColor = '#3498db';
     tabHate.style.backgroundColor = '#8e44ad';
-    tabWish.style.backgroundColor = '#f1c40f';
+    tabTrick.style.backgroundColor = '#e67e22';
     tabSurvey.style.opacity = '0.5';
     tabQuiz.style.opacity = '0.5';
     tabHate.style.opacity = '0.5';
-    tabWish.style.opacity = '1';
-    loadAdminData('wish');
+    tabTrick.style.opacity = '1';
+    loadAdminData('trick');
 });
 
 async function loadAdminData(type) {
@@ -535,21 +535,21 @@ async function loadAdminData(type) {
                 `;
                 resultList.appendChild(li);
             });
-        } else if (type === 'wish') {
-            // 소원 결과 불러오기
-            const querySnapshot = await db.collection("wishes").orderBy("timestamp", "desc").get();
+        } else if (type === 'trick') {
+            // 할로윈 선물 결과 불러오기
+            const querySnapshot = await db.collection("tricks").orderBy("timestamp", "desc").get();
             resultList.innerHTML = '';
             if (querySnapshot.empty) {
-                resultList.innerHTML = '<li>아직 소원을 빈 사람이 없습니다.</li>';
+                resultList.innerHTML = '<li>아직 선물을 보낸 사람이 없습니다.</li>';
                 return;
             }
             querySnapshot.forEach((doc) => {
                 const item = doc.data();
                 const li = document.createElement('li');
                 li.innerHTML = `
-                    <div style="color: #f1c40f; font-weight: bold; font-size: 16px; margin-bottom: 5px;">${item.name} 님의 소원</div>
+                    <div style="color: #e67e22; font-weight: bold; font-size: 16px; margin-bottom: 5px;">${item.name} 님의 선물 예약 🎃</div>
                     <div style="font-size: 14px; color: #fff; line-height: 1.6; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 5px;">
-                        🌕 "${item.wish}"
+                        🎁 선물 받을 친구: <b>${item.target}</b>
                     </div>
                 `;
                 resultList.appendChild(li);
